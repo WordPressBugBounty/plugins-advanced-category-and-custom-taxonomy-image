@@ -1,0 +1,1 @@
+# plugins-advanced-category-and-custom-taxonomy-image
