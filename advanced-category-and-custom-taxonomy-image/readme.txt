@@ -37,7 +37,7 @@ where $term_id is 'category / term id'
 
 Shortcode : use the shortcode anywhere to get taxonomy image. If you don't provide "term_id" value then it will be current queried page taxonomy automatically.
 <pre>
-echo do_shortcode( '[ad_tax_image term_id="" return_img_tag="true" class="test-class"]' ); // keep term_id empty if you want to show current visited taxonomy archive image.
+echo do_shortcode( '[ad_tax_image term_id="" return_img_tag="true" class="your custom class list seperated by space"]' ); // keep term_id empty if you want to show current visited taxonomy archive image.
 </pre>
 
 = Features =
@@ -71,6 +71,8 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 6. After Enabling Go To Your Taxonomy Add/Edit Page To Upload Image
 
 == Changelog ==
+= 1.1.0 =
+* Major Update.. Please do take backup and update the plugin. Applied wp standard security sanitizations and escaping output to avoid any vulnerability. After update please go check your settings throughly and check if it works properly.
 = 1.0.9 =
 * Minor Update.. tested for latest wp compatibility..
 = 1.0.8 =
