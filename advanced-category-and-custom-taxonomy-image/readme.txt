@@ -72,6 +72,8 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 
 == Changelog ==
 = 1.1.0 =
+* Previous version had a bug where Image were not showing even after upload, it has been fixed. Everyone is recommended to update to the latest version. Any device filter is removed from Advanced tab and added as a global device.
+= 1.1.0 =
 * Major Update.. Please do take backup and update the plugin. Applied wp standard security sanitizations and escaping output to avoid any vulnerability. After update please go check your settings throughly and check if it works properly.
 = 1.0.9 =
 * Minor Update.. tested for latest wp compatibility..

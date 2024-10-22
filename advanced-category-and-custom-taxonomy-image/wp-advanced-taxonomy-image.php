@@ -3,7 +3,7 @@
  * Plugin Name: Advanced Category and Custom Taxonomy Image
  * Plugin URI: https://wordpress.org/plugins/advanced-category-and-custom-taxonomy-image/
  * Description: Advanced Category and Taxonomy Image Plugin allow you to add image to your category / tag / custom taxonomy for different platforms (Mobile/ Desktop/ Tablet/ Mac/ Any etc).
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Sajjad Hossain Sagor
  * Author URI: https://sajjadhsagor.com/
  * Text Domain: advanced-category-and-custom-taxonomy-image
@@ -18,7 +18,7 @@ define( 'AD_CAT_TAX_IMG_ROOT_DIR', dirname( __FILE__ ) ); // Plugin root dir
 
 define( 'AD_CAT_TAX_IMG_ROOT_URL', plugin_dir_url( __FILE__ ) ); // Plugin root url
 
-define( 'AD_CAT_TAX_IMG_VERSION', '1.1.0' ); // Plugin current version
+define( 'AD_CAT_TAX_IMG_VERSION', '1.1.1' ); // Plugin current version
 
 // add settings api wrapper
 require AD_CAT_TAX_IMG_ROOT_DIR . '/includes/class.settings-api.php';
@@ -39,7 +39,6 @@ class AD_CAT_TAX_IMG_SETTINGS
 		$this->settings_api = new WpNinjaCoder_Settings_API;
 
 		self::$options 		= array(
-			'any' 		=> __( 'Any Device', 'advanced-category-and-custom-taxonomy-image' ),
 			'android'   => __( 'Android', 'advanced-category-and-custom-taxonomy-image' ),
 			'ios' 	    => __( 'iOS (Mac | iPhone | iPad | iPod)', 'advanced-category-and-custom-taxonomy-image' ),
 			'windowsph' => __( 'Windows Phone', 'advanced-category-and-custom-taxonomy-image' ),
@@ -263,21 +262,31 @@ function ad_cat_tax_img_register_taxonomy_img_field()
 				$label 				= __( 'Choose File', 'advanced-category-and-custom-taxonomy-image' );
 
 				// get all image field enabled devices
-				$enabled_devices 	= ad_cat_tax_img_get_option( 'enabled_devices', 'advanced-category-and-custom-taxonomy-image' );
+				$enabled_devices 	= ad_cat_tax_img_get_option( 'enabled_devices', 'ad_cat_tax_img_advanced_settings' );
 
 				//check if any device enabled
 				if ( ! empty( $enabled_devices ) )
 				{
+					$html 			= '<div class="form-field"><label for="tax_image_url_any">' . __( 'Taxonomy Image For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</label>';
+					
+						$html 		.= '<input type="text" class="tax_image_upload wpsa-url" id="tax_image_url_any" name="tax_image_url[tax_image_url_any]" value=""/>';
+
+						$html 		.= '<input type="button" class="button wpsa-browse" value="' . esc_attr( $label ) . '" />';
+
+						$html 		.= '<p class="description">' . __( 'Choose Image To Show For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</p>';
+					
+					$html 			.= '</div>';
+					
 					// registed custom image field for each enabled devices
 					foreach ( $enabled_devices as $enabled_device )
 					{
-						$html  		= '<div class="form-field"> <label for="tax_image_url_' . esc_attr( $enabled_device ) . '">' . __( 'Taxonomy Image For ', 'advanced-category-and-custom-taxonomy-image' ) . sanitize_text_field( AD_CAT_TAX_IMG_SETTINGS::$options[$enabled_device] ) . '</label>';
+						$html  		.= '<div class="form-field"> <label for="tax_image_url_' . esc_attr( $enabled_device ) . '">' . __( 'Taxonomy Image For ', 'advanced-category-and-custom-taxonomy-image' ) . esc_attr( AD_CAT_TAX_IMG_SETTINGS::$options[$enabled_device] ) . '</label>';
 						
 							$html 	.= '<input type="text" class="tax_image_upload wpsa-url" id="tax_image_url_' . esc_attr( $enabled_device ) . '" name="tax_image_url[tax_image_url_' . esc_attr( $enabled_device ) . ']" value="" />';
 
-							$html 	.= '<input type="button" class="button wpsa-browse" value="' . $label . '" />';
+							$html 	.= '<input type="button" class="button wpsa-browse" value="' . esc_attr( $label ) . '" />';
 
-							$html 	.= '<p class="description">' . __( 'Choose Image To Show For ', 'advanced-category-and-custom-taxonomy-image' ) . sanitize_text_field( AD_CAT_TAX_IMG_SETTINGS::$options[$enabled_device] ) . '</p>';
+							$html 	.= '<p class="description">' . __( 'Choose Image To Show For ', 'advanced-category-and-custom-taxonomy-image' ) . esc_attr( AD_CAT_TAX_IMG_SETTINGS::$options[$enabled_device] ) . '</p>';
 						
 						$html 		.= '</div>';
 
@@ -290,7 +299,7 @@ function ad_cat_tax_img_register_taxonomy_img_field()
 					
 						$html 	.= '<input type="text" class="tax_image_upload wpsa-url" id="tax_image_url_any" name="tax_image_url[tax_image_url_any]" value=""/>';
 
-						$html 	.= '<input type="button" class="button wpsa-browse" value="' . $label . '" />';
+						$html 	.= '<input type="button" class="button wpsa-browse" value="' . esc_attr( $label ) . '" />';
 
 						$html 	.= '<p class="description">' . __( 'Choose Image To Show For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</p>';
 					
@@ -310,47 +319,55 @@ function ad_cat_tax_img_register_taxonomy_img_field()
 				//check if any device enabled
 				if ( ! empty( $enabled_devices ) )
 				{
+					// previous version db name was universal, so for compatibility we are checking if universal exists anymore...
+					$any_image_url 			= ad_tax_image_get_any_device_image( $taxonomy->term_id );
+
+					$html  					= '<tr class="form-field">';
+					
+					$html 					.= '<th scope="row" valign="top"><label for="tax_image_url_any">' . __( 'Taxonomy Image For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</label></th><td>';
+					
+					$html 					.= empty( $any_image_url ) ? '' : '<img src="' . esc_url( $any_image_url ) . '" width="100"  height="100"/><br />';
+					
+					$html 					.= '<input type="text" class="tax_image_upload wpsa-url" id="tax_image_url_any" name="tax_image_url[tax_image_url_any]" value="' . esc_url( $any_image_url ) . '"/>';
+
+					$html 					.= '<input type="button" class="button wpsa-browse" value="' . esc_attr( $label ) . '" />';
+					
+					$html 					.= '<p class="description">' . __( 'Choose Image To Show For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</p></td></tr>';
+					
 					// registed custom image field for each enabled devices
 					foreach ( $enabled_devices as $enabled_device )
 					{
-						$device_image_url 	= esc_url( get_term_meta( $taxonomy->term_id, 'tax_image_url_' . $enabled_device, true ) );
-
-						$image 				= $device_image_url != '' ? '<img src="' . $device_image_url . '" width="100"  height="100"/>' : '';
+						$device_image_url 	= get_term_meta( $taxonomy->term_id, 'tax_image_url_' . $enabled_device, true );						
 						
-						$html  				= '<tr class="form-field">';
+						$html  				.= '<tr class="form-field">';
 						
-						$html 				.= '<th scope="row" valign="top"><label for="tax_image_url_' . esc_attr( $enabled_device ) . '">' . __( 'Taxonomy Image For ', 'advanced-category-and-custom-taxonomy-image' ) . sanitize_text_field( AD_CAT_TAX_IMG_SETTINGS::$options[$enabled_device] ) . '</label></th><td>';
+						$html 				.= '<th scope="row" valign="top"><label for="tax_image_url_' . esc_attr( $enabled_device ) . '">' . __( 'Taxonomy Image For ', 'advanced-category-and-custom-taxonomy-image' ) . esc_attr( AD_CAT_TAX_IMG_SETTINGS::$options[$enabled_device] ) . '</label></th><td>';
 
-						$html 				.= $image;
+						$html 				.= empty( $device_image_url ) ? '' : '<img src="' . esc_url( $device_image_url ) . '" width="100"  height="100"/><br />';
 						
-						$html 				.= '<br />';
-						
-						$html 				.= '<input type="text" class="tax_image_upload wpsa-url" id="tax_image_url_' . esc_attr( $enabled_device ) . '" name="tax_image_url[tax_image_url_' . esc_attr( $enabled_device ) . ']" value="' . $device_image_url . '"/>';
+						$html 				.= '<input type="text" class="tax_image_upload wpsa-url" id="tax_image_url_' . esc_attr( $enabled_device ) . '" name="tax_image_url[tax_image_url_' . esc_attr( $enabled_device ) . ']" value="' . esc_url( $device_image_url ) . '"/>';						
 
-						$html 				.= '<input type="button" class="button wpsa-browse" value="' . $label . '" />';
+						$html 				.= '<input type="button" class="button wpsa-browse" value="' . esc_attr( $label ) . '" />';
 
-						$html 				.= '<p class="description">' . __( 'Choose Image To Show For ', 'advanced-category-and-custom-taxonomy-image' ) . sanitize_text_field( AD_CAT_TAX_IMG_SETTINGS::$options[$enabled_device] ) . '</p>';
+						$html 				.= '<p class="description">' . __( 'Choose Image To Show For ', 'advanced-category-and-custom-taxonomy-image' ) . esc_attr( AD_CAT_TAX_IMG_SETTINGS::$options[$enabled_device] ) . '</p>';
 
 						echo $html;
 					}
 				}
 				else
 				{
-					$any_image_url 			= esc_url( get_term_meta( $taxonomy->term_id, 'tax_image_url_any', true ) );
-
-					$image 					= $any_image_url != '' ? '<img src="' . $any_image_url . '" width="100"  height="100"/>' : '';
+					// previous version db name was universal, so for compatibility we are checking if universal exists anymore...
+					$any_image_url 			= ad_tax_image_get_any_device_image( $taxonomy->term_id );
 
 					$html  					= '<tr class="form-field">';
 					
 					$html 					.= '<th scope="row" valign="top"><label for="tax_image_url_any">' . __( 'Taxonomy Image For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</label></th><td>';
 					
-					$html 					.= $image;
+					$html 					.= empty( $any_image_url ) ? '' : '<img src="' . esc_url( $any_image_url ) . '" width="100"  height="100"/><br />';
 					
-					$html 					.= '<br />';
-					
-					$html 					.= '<input type="text" class="tax_image_upload wpsa-url" id="tax_image_url_any" name="tax_image_url[tax_image_url_any]" value="' . $any_image_url . '"/>';
+					$html 					.= '<input type="text" class="tax_image_upload wpsa-url" id="tax_image_url_any" name="tax_image_url[tax_image_url_any]" value="' . esc_url( $any_image_url ) . '"/>';
 
-					$html 					.= '<input type="button" class="button wpsa-browse" value="' . $label . '" />';
+					$html 					.= '<input type="button" class="button wpsa-browse" value="' . esc_attr( $label ) . '" />';
 					
 					$html 					.= '<p class="description">' . __( 'Choose Image To Show For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</p></td></tr>';
 
@@ -398,6 +415,9 @@ function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = ar
 	// get all image field enabled devices
 	$enabled_devices 		= ad_cat_tax_img_get_option( 'enabled_devices', 'ad_cat_tax_img_advanced_settings' );
 
+	// previous version db name was universal, so for compatibility we are checking if universal exists anymore...
+	$device_image_url 		= ad_tax_image_get_any_device_image( $term_id );
+
 	//check if any taxonomy enabled
 	if ( ! empty( $enabled_taxonomies ) )
 	{
@@ -407,22 +427,7 @@ function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = ar
 			// registed custom image field for each enabled devices
 			foreach ( $enabled_devices as $enabled_device )
 			{
-				// available devices
-				//'any' 	  => 'any',
-				//'android'   => 'Android',
-				//'ios' 	  => 'iOS (Mac, iPhone, iPad, iPod)',
-				//'windowsph' => 'Windows Phone',
-				//'mobile'    => 'Mobile',
-				//'tablet'    => 'Tablet',
-				//'desktop'   => 'Desktop'
-
-				if( $enabled_device == 'any' )
-				{
-					$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
-
-					break; //any match found no need to check further
-				}
-				else if( $enabled_device == 'android' && $detect->isAndroidOS() )
+				if( $enabled_device == 'android' && $detect->isAndroidOS() )
 				{
 					$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
@@ -456,7 +461,7 @@ function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = ar
 				{
 					$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-					break; //match found no need to check further
+					break; //Dektop match found no need to check further
 				}
 			}
 		}
@@ -479,41 +484,28 @@ function ad_tax_image_available( $term_id = '' )
 	if ( empty( $term_id ) && ! intval( $term_id ) ) return false;
 
 	// get all image field enabled taxonomies
-	$enabled_taxonomies 	= ad_cat_tax_img_get_option( 'enabled_taxonomies', 'ad_cat_tax_img_basic_settings' );
+	$enabled_taxonomies 				= ad_cat_tax_img_get_option( 'enabled_taxonomies', 'ad_cat_tax_img_basic_settings' );
 
 	// get all image field enabled devices
-	$enabled_devices 		= ad_cat_tax_img_get_option( 'enabled_devices', 'ad_cat_tax_img_advanced_settings' );
+	$enabled_devices 					= ad_cat_tax_img_get_option( 'enabled_devices', 'ad_cat_tax_img_advanced_settings' );
 
 	//check if any taxonomy enabled
-	if ( ! empty( $enabled_taxonomies ))
+	if ( ! empty( $enabled_taxonomies ) )
 	{
+		// previous version db name was universal, so for compatibility we are checking if universal exists anymore...
+		$device_image_url 				= ad_tax_image_get_any_device_image( $term_id );
+		
 		//check if any device enabled
 		if ( ! empty( $enabled_devices ) )
 		{
 			// registed custom image field for each enabled devices
 			foreach ( $enabled_devices as $enabled_device )
 			{
-				// available devices
-				//'any' 	  => 'any',
-				//'android'   => 'Android',
-				//'ios' 	  => 'iOS (Mac, iPhone, iPad, iPod)',
-				//'windowsph' => 'Windows Phone',
-				//'mobile'    => 'Mobile',
-				//'tablet'    => 'Tablet',
-				//'desktop'   => 'Desktop'
-
-				if( $enabled_device == 'any' )
+				if( $enabled_device == 'android' )
 				{
 					$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
 					break; //android match found no need to check further
-				}
-				else if( $enabled_device == 'android' )
-				{
-					$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
-
-					break; //android match found no need to check further
-
 				}
 				else if( $enabled_device == 'iphone' )
 				{
@@ -543,7 +535,7 @@ function ad_tax_image_available( $term_id = '' )
 				{
 					$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-					break; //match found no need to check further
+					break; //Dektop match found no need to check further
 				}
 			}
 		}
@@ -566,3 +558,18 @@ add_shortcode( 'ad_tax_image', function( $atts )
 
 	return get_taxonomy_image( intval( $attr['term_id'] ), filter_var( $attr['return_img_tag'], FILTER_VALIDATE_BOOLEAN ), explode( ' ', esc_attr( $attr['class'] ) ) );
 } );
+
+function ad_tax_image_get_any_device_image( $term_id = '' )
+{
+	if ( empty( $term_id ) && ! intval( $term_id ) ) return '';
+
+	// previous version db name was universal, so for compatibility we are checking if universal exists anymore...
+	$device_image_url 				= get_term_meta( $term_id, 'tax_image_url_universal', true );
+
+	if( empty( $device_image_url ) )
+	{
+		$device_image_url 			= get_term_meta( $term_id, 'tax_image_url_any', true );
+	}
+
+	return $device_image_url;
+}
