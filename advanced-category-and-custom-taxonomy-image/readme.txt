@@ -5,7 +5,7 @@ Author: Sajjad Hossain Sagor
 Tested up to: 6.7
 License: GPLv2
 Requires at least: 5.6
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
 Add Custom Image To Your Category / Custom Taxonomy Field With Advanced Category and Custom Taxonomy Image Plugin.
 
@@ -71,6 +71,8 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 6. After Enabling Go To Your Taxonomy Add/Edit Page To Upload Image
 
 == Changelog ==
+= 2.0.1 =
+* Fixed bug function get_taxonomy_image() was not found
 = 2.0.0 =
 * Major changes in codebase. Compatibility checkup for latest wp version 6.7
 = 1.1.0 =
