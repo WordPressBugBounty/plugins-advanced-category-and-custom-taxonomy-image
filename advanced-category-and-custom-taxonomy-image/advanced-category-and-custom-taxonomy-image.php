@@ -79,6 +79,15 @@ register_deactivation_hook( __FILE__, 'deactivate_advanced_category_and_custom_t
 require ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH . 'includes/class-plugin.php';
 
 /**
+ * Includes the plugin's functions file.
+ *
+ * This file contains utility functions.
+ *
+ * @since 2.0.1
+ */
+require ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH . 'includes/functions.php';
+
+/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
