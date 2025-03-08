@@ -26,7 +26,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 *
 	 * @since    2.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string    $version    		The current version of this plugin.
 	 */
 	private $version;
 
@@ -35,7 +35,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 *
 	 * @since    2.0.0
 	 * @access   public
-	 * @var      array    $devices    Holds device types list.
+	 * @var      array    $devices    		Holds device types list.
 	 */
 	public static $devices 	= array();
 
@@ -44,7 +44,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 *
 	 * @since    2.0.0
 	 * @access   private
-	 * @var      array    $settings_api    Holds the plugin settings api wrapper class object.
+	 * @var      array    $settings_api    	Holds the plugin settings api wrapper class object.
 	 */
 	private $settings_api;
 
@@ -52,8 +52,9 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    2.0.0
-	 * @param    string    $plugin_name       The name of this plugin.
-	 * @param    string    $version    The version of this plugin.
+	 * @access   public
+	 * @param    string    $plugin_name     The name of this plugin.
+	 * @param    string    $version    		The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version )
 	{
@@ -77,6 +78,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 * Register the stylesheets for the admin area.
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function enqueue_styles()
 	{
@@ -87,6 +89,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 * Register the JavaScript for the admin area.
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function enqueue_scripts()
 	{
@@ -105,9 +108,9 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 * Adds a settings link to the plugin's action links on the plugin list table.
 	 *
 	 * @since    2.0.0
-	 *
-	 * @param    array $links The existing array of plugin action links.
-	 * @return   array The updated array of plugin action links, including the settings link.
+	 * @access   public
+	 * @param    array $links    The existing array of plugin action links.
+	 * @return   array $links    The updated array of plugin action links, including the settings link.
 	 */
 	public function add_plugin_action_links( $links )
 	{
@@ -122,6 +125,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 * Adds the plugin settings page to the WordPress dashboard menu.
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function admin_menu()
 	{
@@ -138,6 +142,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 * Renders the plugin settings page form.
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function menu_page()
 	{
@@ -148,6 +153,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 * Register Plugin Options Via Settings API
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function admin_init()
 	{
@@ -163,10 +169,10 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	/**
 	 * Returns the settings sections for the plugin settings page.
 	 *
-	 * @since 2.0.0
-	 *
-	 * @return array An array of settings sections, where each section is an array
-	 *               with 'id' and 'title' keys.
+	 * @since   2.0.0
+	 * @access  public
+	 * @return  array   An array of settings sections, where each section is an array
+	 *                  with 'id' and 'title' keys.
 	 */
 	public function get_settings_sections()
 	{
@@ -187,13 +193,13 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	/**
 	 * Returns all the settings fields for the plugin settings page.
 	 *
-	 * @since 2.0.0
-	 *
-	 * @return array An array of settings fields, organized by section ID.  Each
-	 *               section ID is a key in the array, and the value is an array
-	 *               of settings fields for that section. Each settings field is
-	 *               an array with 'name', 'label', 'type', 'desc', and other keys
-	 *               depending on the field type.
+	 * @since   2.0.0
+	 * @access  public
+	 * @return  array   An array of settings fields, organized by section ID.  Each
+	 *                  section ID is a key in the array, and the value is an array
+	 *                  of settings fields for that section. Each settings field is
+	 *                  an array with 'name', 'label', 'type', 'desc', and other keys
+	 *                  depending on the field type.
 	 */
 	public function get_settings_fields()
 	{
@@ -222,9 +228,14 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	}
 
 	/**
-	 * Returns all the taxonomies
+	 * Retrieves all registered taxonomies.
 	 *
-	 * @return array taxonomies
+	 * This function returns an array containing all registered taxonomies in WordPress,
+	 * excluding built-in internal taxonomies that are not intended for general use.
+	 *
+	 * @since    2.0.0
+	 * @access   public
+	 * @return   array   An array of taxonomy names.
 	 */
 	public function get_all_taxonomies()
 	{
@@ -263,9 +274,14 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	}
 
 	/**
-	 * save taxonomy values
+	 * Saves taxonomy image URLs.
 	 *
-	 * @since 2.0.0
+	 * This function saves the taxonomy image URLs submitted via the form to the term meta.
+	 * It iterates through the submitted URLs, sanitizes them, and updates the term meta.
+	 *
+	 * @since    2.0.0
+	 * @access   public
+	 * @param    int $term_id The ID of the taxonomy term being saved.
 	 */
 	public function save_img_url( $term_id )
 	{
@@ -279,22 +295,36 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	}
 
 	/**
-	 * Add shortcode column to taxonomy list
+	 * Adds a shortcode column to the taxonomy list table.
 	 *
-	 * @since 2.0.0
+	 * This function adds a new column labeled "Taxonomy Image Template Tag" to the taxonomy
+	 * list table in the WordPress admin area. This column will display the template tag
+	 * or shortcode that can be used to display the associated taxonomy image.
+	 *
+	 * @since    2.0.0
+	 * @access   public
+	 * @param    array $columns An associative array of columns to be displayed in the taxonomy list table.
+	 * @return   array $columns An associative array of columns with the new "Taxonomy Image Template Tag" column added.
 	 */
 	public function template_tag_of_taxonomy( $columns )
 	{
-		// add carousel shortcode column
 		$columns['taxonomy_image_template_tag'] = __( 'Taxonomy Image Template Tag', 'advanced-category-and-custom-taxonomy-image' );
 		
 		return $columns;
 	}
 
 	/**
-	 * add shortcode column content
+	 * Adds content to the shortcode column in the taxonomy list table.
 	 *
-	 * @since 2.0.0
+	 * This function populates the "Taxonomy Image Template Tag" column with the appropriate
+	 * template tag or shortcode for displaying the taxonomy image, if available.
+	 *
+	 * @since    2.0.0
+	 * @access   public
+	 * @param    string $content     The current content of the table cell.
+	 * @param    string $column_name The name of the current column.
+	 * @param    int    $term_id     The ID of the current taxonomy term.
+	 * @return   string The content to be displayed in the table cell.
 	 */
 	public function template_tag_content_of_taxonomy( $content, $column_name, $term_id )
 	{
@@ -308,9 +338,14 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	}
 
 	/**
-	 * register all enabled taxonomy to add taxonomy field
+	 * Registers form fields for all enabled taxonomies.
 	 *
-	 * @since 2.0.0
+	 * This function iterates through all taxonomies that have been enabled for custom image fields
+	 * and registers the necessary form fields (add/edit) to allow users to upload or select images
+	 * for those taxonomies.
+	 *
+	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function add_form_fields()
 	{
@@ -344,9 +379,9 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 					$html 	.= '<p class="description">' . __( 'Choose Image To Show For ', 'advanced-category-and-custom-taxonomy-image' ) . esc_attr( self::$devices[$enabled_device] ) . '</p>';
 				
 				$html 		.= '</div>';
-
-				echo $html;
 			}
+
+			echo $html;
 		}
 		else
 		{
@@ -365,9 +400,15 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	}
 
 	/**
-	 * register all enabled taxonomy to edit taxonomy field
+	 * Registers edit form fields for all enabled taxonomies.
 	 *
-	 * @since 2.0.0
+	 * This function iterates through all taxonomies that have been enabled for custom image fields
+	 * and registers the necessary edit form fields to allow users to modify or remove images
+	 * associated with those taxonomies.
+	 *
+	 * @since    2.0.0
+	 * @access   public
+	 * @param    string    $taxonomy    The name of the taxonomy being edited.
 	 */
 	public function edit_form_fields( $taxonomy )
 	{
@@ -410,9 +451,9 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 				$html 				.= '<input type="button" class="button advanced-category-and-custom-taxonomy-image-upload-btn" value="' . esc_attr( $label ) . '" />';
 
 				$html 				.= '<p class="description">' . __( 'Choose Image To Show For ', 'advanced-category-and-custom-taxonomy-image' ) . esc_attr( self::$devices[$enabled_device] ) . '</p>';
-
-				echo $html;
 			}
+
+			echo $html;
 		}
 		else
 		{

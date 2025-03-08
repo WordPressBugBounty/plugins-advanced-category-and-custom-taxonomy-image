@@ -15,3 +15,15 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) die;
  */
 delete_option( 'ad_cat_tax_img_basic_settings' );
 delete_option( 'ad_cat_tax_img_advanced_settings' );
+
+global $wpdb;
+
+/**
+ * Remove terms meta on uninstall/delete
+ */
+$wpdb->query(
+	$wpdb->prepare(
+		"DELETE FROM {$wpdb->termmeta} WHERE meta_key LIKE %s",
+		'%tax_image_url_%'
+	)
+);

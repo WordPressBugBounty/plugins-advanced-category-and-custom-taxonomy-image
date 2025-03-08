@@ -203,6 +203,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function run()
 	{
@@ -214,6 +215,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 	 * WordPress and to define internationalization functionality.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    string    The name of the plugin.
 	 */
 	public function get_plugin_name()
@@ -225,6 +227,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    Advanced_Category_And_Custom_Taxonomy_Image_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader()
@@ -236,6 +239,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 	 * Retrieve the version number of the plugin.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    string    The version number of the plugin.
 	 */
 	public function get_version()
@@ -244,26 +248,11 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 	}
 
 	/**
-	 * Returns option value
-	 *
-	 * @return string|array option value
-	 */
-	public static function get_option( $option, $section, $default = '' )
-	{
-		$options = get_option( $section );
-
-		if ( isset( $options[$option] ) )
-		{
-			return $options[$option];
-		}
-
-		return $default;
-	}
-
-	/**
 	 * Returns default image which will be used for any devices
 	 *
-	 * @return string|empty $device_image_url return the url or empty
+	 * @since     2.0.0
+	 * @access    public
+	 * @return    string    $device_image_url return the url
 	 */
 	public static function get_any_device_image( $term_id = '' )
 	{
@@ -282,8 +271,10 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 
 	/**
 	 * checks if taxonomy image is available for any device
-	 *
-	 * @return string|empty $device_image_url return the url or empty
+	 * @since   2.0.0
+	 * @access  public
+	 * @param   $term_id 	term id to get the image of
+	 * @return  bool    	return if the provided term has image saved
 	 */
 	public static function tax_image_available( $term_id = '' )
 	{
@@ -352,5 +343,34 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 		}
 		
 		return ! empty( $device_image_url ) ? true : false;
+	}
+
+	/**
+	 * Retrieves an option value from the WordPress options table.
+	 *
+	 * This function retrieves a specific option value from a given section within the WordPress options table.
+	 * If the option is not found, it returns a default value.
+	 *
+	 * @since    2.0.0
+	 * @access   public
+	 * @param    string $option  			The name of the option to retrieve.
+	 * @param    string $section 			The name of the option section (the key under which options are stored in the database).
+	 * @param    mixed  $default Optional. 	The default value to return if the option is not found. Defaults to an empty string.
+	 * @return   mixed 						The option value, or the default value if the option is not set.
+	 */
+	public static function get_option( $option, $section, $default = '' )
+	{
+		// Retrieve the options array for the given section.
+		$options = get_option( $section );
+
+		// Check if the option exists within the retrieved options array.
+		if ( isset( $options[$option] ) )
+		{
+			// Return the option value.
+			return $options[$option];
+		}
+
+		// If the option is not found, return the default value.
+		return $default;
 	}
 }

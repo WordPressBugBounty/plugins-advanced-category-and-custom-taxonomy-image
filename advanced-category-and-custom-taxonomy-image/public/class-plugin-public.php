@@ -26,7 +26,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Public
 	 *
 	 * @since    2.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string    $version    		The current version of this plugin.
 	 */
 	private $version;
 
@@ -34,8 +34,9 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Public
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    2.0.0
-	 * @param    string    $plugin_name   The name of the plugin.
-	 * @param    string    $version   The version of this plugin.
+	 * @access   public
+	 * @param    string    $plugin_name    	The name of the plugin.
+	 * @param    string    $version    		The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version )
 	{
@@ -47,6 +48,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Public
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
+	 * @access   public
 	 * @since    2.0.0
 	 */
 	public function enqueue_styles()
@@ -57,6 +59,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Public
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
 	 *
+	 * @access   public
 	 * @since    2.0.0
 	 */
 	public function enqueue_scripts()
@@ -69,18 +72,33 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Public
 	}
 
 	/**
-	 * Generate output for the shortcode.
+	 * Generate output for the taxonomy image shortcode.
 	 *
+	 * This function handles the 'ad_tax_image' shortcode, retrieving and displaying a taxonomy image
+	 * based on the provided attributes.
+	 *
+	 * @access   public
 	 * @since    2.0.0
+	 * @param    array    $atts    Shortcode attributes.
+	 * - 'term_id': (string|int, optional) The ID of the taxonomy term to retrieve the image for. Defaults to ''.
+	 * - 'return_img_tag': (string|bool, optional) Whether to return the image as an <img> tag. Defaults to false.
+	 * - 'class': (string, optional) Custom CSS classes to add to the image tag. Defaults to ''.
+	 * @return   string   		   The taxonomy image or an empty string if no image is found or term_id is invalid.
 	 */
 	public function ad_tax_image_shortcode_callback( $atts )
 	{
+		 // Merge provided attributes with default values
 		$attr = shortcode_atts( array(
 			'term_id' 			=> '',
 			'return_img_tag' 	=> false,
 			'class' 			=> '',
 		), $atts );
 
-		return get_taxonomy_image( intval( $attr['term_id'] ), filter_var( $attr['return_img_tag'], FILTER_VALIDATE_BOOLEAN ), explode( ' ', esc_attr( $attr['class'] ) ) );
+		// Retrieve and return the taxonomy image
+		return get_taxonomy_image(
+			intval( $attr['term_id'] ), // Convert term_id to an integer
+			filter_var( $attr['return_img_tag'], FILTER_VALIDATE_BOOLEAN ), // Validate and convert return_img_tag to boolean
+			explode( ' ', esc_attr( $attr['class'] ) ) // Sanitize and explode class attribute into an array
+		);
 	}
 }

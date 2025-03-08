@@ -1,9 +1,15 @@
 <?php
 
 /**
- * register a template tag function to show taxonomy image
+ * Retrieves the URL or HTML image tag for a taxonomy image.
  *
- * @return string|empty $device_image_url return the url or default message
+ * This function retrieves the image URL associated with a given taxonomy term ID.
+ * It can optionally return an HTML <img> tag with specified classes.
+ *
+ * @param  int|string   $term_id        The ID of the taxonomy term. Defaults to ''.
+ * @param  bool         $return_img_tag Optional. Whether to return an HTML <img> tag. Defaults to false.
+ * @param  array        $class          Optional. An array of CSS classes to add to the <img> tag. Defaults to an empty array.
+ * @return string|empty 				The image URL or HTML <img> tag, or an empty string if no image is found or term ID is invalid.
  */
 function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = array() )
 {
@@ -17,8 +23,10 @@ function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = ar
 	// get all image field enabled devices
 	$enabled_devices 					= Advanced_Category_And_Custom_Taxonomy_Image::get_option( 'enabled_devices', 'ad_cat_tax_img_advanced_settings' );
 
+	$device_image_url					= ''; // Set default image url to empty
+
 	// previous version db name was universal, so for compatibility we are checking if universal exists anymore...
-	$device_image_url 					= Advanced_Category_And_Custom_Taxonomy_Image::get_any_device_image( $term_id );
+	$any_device_image_url 				= Advanced_Category_And_Custom_Taxonomy_Image::get_any_device_image( $term_id );
 
 	//check if any taxonomy enabled
 	if ( ! empty( $enabled_taxonomies ) )
@@ -71,6 +79,12 @@ function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = ar
 	else
 	{
 		$device_image_url 				= __( 'Please Enable Taxonomies First!', 'advanced-category-and-custom-taxonomy-image' );
+	}
+
+	if ( empty( $device_image_url ) && ! empty( $any_device_image_url ) )
+	{
+		// if no image found for enabled devices, opt for default any device if available
+		$device_image_url 				= $any_device_image_url;
 	}
 
 	$classes 							= ! empty( $class ) && is_array( $class ) ? implode( ' ', $class ) : '';

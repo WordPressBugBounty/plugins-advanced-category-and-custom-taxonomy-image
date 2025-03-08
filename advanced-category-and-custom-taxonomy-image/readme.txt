@@ -3,9 +3,11 @@ Tags: taxonomy image, category image, featured image, category logo, term image
 Contributors: sajjad67
 Author: Sajjad Hossain Sagor
 Tested up to: 6.7
-License: GPLv2
 Requires at least: 5.6
-Stable tag: 2.0.1
+Stable tag: 2.0.2
+Requires PHP: 8.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Add Custom Image To Your Category / Custom Taxonomy Field With Advanced Category and Custom Taxonomy Image Plugin.
 
@@ -71,6 +73,8 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 6. After Enabling Go To Your Taxonomy Add/Edit Page To Upload Image
 
 == Changelog ==
+= 2.0.2 =
+* If for specific device image is not set yet, it will opt for default any device image now
 = 2.0.1 =
 * Fixed bug function get_taxonomy_image() was not found
 = 2.0.0 =
