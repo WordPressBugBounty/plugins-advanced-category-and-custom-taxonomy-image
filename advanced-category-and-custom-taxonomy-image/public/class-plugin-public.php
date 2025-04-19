@@ -3,8 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * Defines the plugin name, version, other methods and
- * enqueue the public-facing stylesheet and JavaScript.
+ * Defines the plugin name, version and other methods.
  *
  * @package    Advanced_Category_And_Custom_Taxonomy_Image
  * @subpackage Advanced_Category_And_Custom_Taxonomy_Image/public
@@ -43,32 +42,6 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Public
 		$this->plugin_name 	= $plugin_name;
 		
 		$this->version 		= $version;
-	}
-
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @access   public
-	 * @since    2.0.0
-	 */
-	public function enqueue_styles()
-	{
-		wp_enqueue_style( $this->plugin_name, ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_URL . 'public/css/public.css', array(), $this->version, 'all' );
-	}
-
-	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @access   public
-	 * @since    2.0.0
-	 */
-	public function enqueue_scripts()
-	{
-		wp_enqueue_script( $this->plugin_name, ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_URL . 'public/js/public.js', array( 'jquery' ), $this->version, false );
-
-		wp_localize_script( $this->plugin_name, 'ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE', array(
-			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),
-		) );
 	}
 
 	/**

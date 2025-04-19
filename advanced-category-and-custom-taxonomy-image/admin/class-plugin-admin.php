@@ -3,8 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * Defines the plugin name, version, other methods and
- * enqueue the admin-specific stylesheet and JavaScript.
+ * Defines the plugin name, version and other methods.
  *
  * @package    Advanced_Category_And_Custom_Taxonomy_Image
  * @subpackage Advanced_Category_And_Custom_Taxonomy_Image/admin
@@ -82,6 +81,11 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 */
 	public function enqueue_styles()
 	{
+		global $pagenow;
+		
+		/* Only show if in term add/edit page */
+		if( ! in_array( $pagenow, array( 'term.php', 'edit-tags.php' ) ) ) return;
+		
 		wp_enqueue_style( $this->plugin_name, ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
 	}
 
@@ -93,6 +97,11 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 */
 	public function enqueue_scripts()
 	{
+		global $pagenow;
+		
+		/* Only show if in term add/edit page */
+		if( ! in_array( $pagenow, array( 'term.php', 'edit-tags.php' ) ) ) return;
+		
 		wp_enqueue_media(); // load WP Media Uploader Modal scripts
 		
 		wp_enqueue_script( $this->plugin_name, ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_URL . 'admin/js/admin.js', array( 'jquery' ), $this->version, false );
@@ -239,16 +248,16 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 	 */
 	public function get_all_taxonomies()
 	{
-		$args 					= array();
+		$args 										= array();
 
-		$output 				= 'objects'; // objects
+		$output 									= 'objects'; // objects
 		
-		$taxonomies 			= get_taxonomies( $args, $output );
+		$taxonomies 								= get_taxonomies( $args, $output );
 
-		$name_value_pair 		= array();
+		$name_value_pair 							= array();
 
 		// exclude some wp & woocommerce private taxonomies 
-		$disabled_taxonomies 	= array(
+		$disabled_taxonomies 						= array(
 			'nav_menu',
 			'link_category',
 			'post_format',
@@ -266,7 +275,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 			{
 				if ( in_array( $taxonomy->name, $disabled_taxonomies ) ) continue;
 
-				$name_value_pair[$taxonomy->name] = ucwords( $taxonomy->label );
+				$name_value_pair[$taxonomy->name] 	= ucwords( $taxonomy->label );
 			}
 		}
 
@@ -331,7 +340,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin
 		// check if column is our custom column 'taxonomy_image_template_tag' 
 		if ( 'taxonomy_image_template_tag' == $column_name )
 		{
-			return Advanced_Category_And_Custom_Taxonomy_Image::tax_image_available( $term_id ) ? '<code>echo get_taxonomy_image( ' . intval( $term_id ) . ', true, array( "your", "custom", "class", "list", "of", "php", "array" ) );<br><br>echo do_shortcode( \'[ad_tax_image term_id="' . intval( $term_id ) . '" return_img_tag="true" class="your custom class list seperated by space"]\' );</code>' : '';
+			return Advanced_Category_And_Custom_Taxonomy_Image::tax_image_available( $term_id ) ? '<code>echo get_taxonomy_image( ' . intval( $term_id ) . ', true, "your custom class list separated by space" );<br><br>echo do_shortcode( \'[ad_tax_image term_id="' . intval( $term_id ) . '" return_img_tag="true" class="your custom class list separated by space"]\' );</code>' : '';
 		}
 
 		return '';

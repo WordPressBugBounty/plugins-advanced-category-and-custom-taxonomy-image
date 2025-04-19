@@ -174,7 +174,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 			foreach ( $enabled_taxonomies as $enabled_taxonomy )
 			{
 				// Add shortcode column to taxonomy list
-				$this->loader->add_filter( "manage_edit-{$enabled_taxonomy}_columns", $plugin_admin, 'template_tag_of_taxonomy' );
+				$this->loader->add_filter( "manage_edit-{$enabled_taxonomy}_columns", $plugin_admin, 'template_tag_of_taxonomy', 10, 1 );
 				$this->loader->add_filter( "manage_{$enabled_taxonomy}_custom_column", $plugin_admin, 'template_tag_content_of_taxonomy', 10, 3 );
 				$this->loader->add_action( "{$enabled_taxonomy}_add_form_fields", $plugin_admin, 'add_form_fields' );
 				$this->loader->add_action( "{$enabled_taxonomy}_edit_form_fields", $plugin_admin, 'edit_form_fields' );
@@ -192,9 +192,6 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 	private function define_public_hooks()
 	{
 		$plugin_public = new Advanced_Category_And_Custom_Taxonomy_Image_Public( $this->get_plugin_name(), $this->get_version() );
-
-		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		add_shortcode( 'ad_tax_image', array( $plugin_public, 'ad_tax_image_shortcode_callback' ) );
 	}
@@ -291,7 +288,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 		{
 			// previous version db name was universal, so for compatibility we are checking if universal exists anymore...
 			$device_image_url 				= self::get_any_device_image( $term_id );
-			
+
 			//check if any device enabled
 			if ( ! empty( $enabled_devices ) )
 			{
@@ -302,37 +299,37 @@ class Advanced_Category_And_Custom_Taxonomy_Image
 					{
 						$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						break; //android match found no need to check further
+						if( ! empty( $device_image_url ) ) break; //android match found no need to check further
 					}
 					else if( $enabled_device == 'iphone' )
 					{
 						$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						break; //iOS match found no need to check further
+						if( ! empty( $device_image_url ) ) break; //iOS match found no need to check further
 					}
 					else if( $enabled_device == 'windowsph' )
 					{
 						$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						break; //Windows Phone match found no need to check further
+						if( ! empty( $device_image_url ) ) break; //Windows Phone match found no need to check further
 					}
 					else if( $enabled_device == 'mobile' )
 					{
 						$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						break; //Any Mobile match found no need to check further
+						if( ! empty( $device_image_url ) ) break; //Any Mobile match found no need to check further
 					}
 					else if( $enabled_device == 'tablet' )
 					{
 						$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						break; //Any Mobile match found no need to check further
+						if( ! empty( $device_image_url ) ) break; //Any Mobile match found no need to check further
 					}
 					else if( $enabled_device == 'desktop' )
 					{
 						$device_image_url 	= get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						break; //Dektop match found no need to check further
+						if( ! empty( $device_image_url ) ) break; //Dektop match found no need to check further
 					}
 				}
 			}

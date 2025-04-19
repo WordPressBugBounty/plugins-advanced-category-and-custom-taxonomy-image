@@ -8,10 +8,11 @@
  *
  * @param  int|string   $term_id        The ID of the taxonomy term. Defaults to ''.
  * @param  bool         $return_img_tag Optional. Whether to return an HTML <img> tag. Defaults to false.
- * @param  array        $class          Optional. An array of CSS classes to add to the <img> tag. Defaults to an empty array.
+ * @param  array|string $class          Optional. An array or space separated string of CSS classes to add to the <img> tag. 
+ *                                      Defaults to an empty string.
  * @return string|empty 				The image URL or HTML <img> tag, or an empty string if no image is found or term ID is invalid.
  */
-function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = array() )
+function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = '' )
 {
 	$detect 							= new \Detection\MobileDetect();
 
@@ -87,7 +88,7 @@ function get_taxonomy_image( $term_id = '', $return_img_tag = false, $class = ar
 		$device_image_url 				= $any_device_image_url;
 	}
 
-	$classes 							= ! empty( $class ) && is_array( $class ) ? implode( ' ', $class ) : '';
+	$classes 							= is_array( $class ) ? implode( ' ', $class ) : esc_attr( $class );
 
 	$result 							= filter_var( $return_img_tag, FILTER_VALIDATE_BOOLEAN ) ? "<img src='" . esc_url( $device_image_url ) . "' class='" . esc_attr( $classes ) . "'>" : esc_url( $device_image_url );
 	

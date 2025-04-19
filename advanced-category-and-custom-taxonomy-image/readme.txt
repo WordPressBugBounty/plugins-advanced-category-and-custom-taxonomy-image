@@ -4,7 +4,7 @@ Contributors: sajjad67
 Author: Sajjad Hossain Sagor
 Tested up to: 6.7
 Requires at least: 5.6
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,7 +30,7 @@ $return_img_tag
 (boolean) (Optional) Formatted Image with <img> tag for the field during output.
 
 $class
-(array) (Optional) Array of image classes ex: array( 'class1', 'class2', ... ) but $return_img_tag should be true to add image class.
+(array|string) (Optional) An array or space separated string of CSS classes to add to the <img> tag. classes ex: array( 'class1', 'class2', ... ) but $return_img_tag should be true to add image class.
 
 echo $taxonomy_img; // taxonomy image url
 </pre>
@@ -73,6 +73,8 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 6. After Enabling Go To Your Taxonomy Add/Edit Page To Upload Image
 
 == Changelog ==
+= 2.0.3 =
+* Compatibility checkup for latest wp version 6.8
 = 2.0.2 =
 * If for specific device image is not set yet, it will opt for default any device image now
 = 2.0.1 =

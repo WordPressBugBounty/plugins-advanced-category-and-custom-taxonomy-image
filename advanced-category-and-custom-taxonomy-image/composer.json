@@ -1,5 +1,5 @@
 {
-    "require": {
-        "mobiledetect/mobiledetectlib": "^4.8"
-    }
+	"require": {
+		"mobiledetect/mobiledetectlib": "^4.8"
+	}
 }
