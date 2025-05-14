@@ -4,7 +4,7 @@
  *
  * @since         2.0.0
  * @package       Advanced_Category_And_Custom_Taxonomy_Image
- * @subpackage    Advanced_Category_And_Custom_Taxonomy_Image/public
+ * @subpackage    Advanced_Category_And_Custom_Taxonomy_Image/languages
  * @author        Sajjad Hossain Sagor <sagorh672@gmail.com>
  */
 

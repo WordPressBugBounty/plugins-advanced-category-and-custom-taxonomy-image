@@ -2,9 +2,9 @@
 Tags: taxonomy image, category image, featured image, category logo, term image
 Contributors: sajjad67
 Author: Sajjad Hossain Sagor
-Tested up to: 6.7
+Tested up to: 6.8
 Requires at least: 5.6
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -18,7 +18,7 @@ Built-in Template Tag To Use Anywhere You Want In Your Theme : get_taxonomy_imag
 = Documentation =
 
 <pre>
-$taxonomy_img = get_taxonomy_image( int $term_id = get_queried_object()->term_id , boolean $return_img_tag = false , array $class = array() );
+$taxonomy_img = get_taxonomy_image( int $term_id = get_queried_object()->term_id , boolean $return_img_tag = false , string $class = '' );
 
 get taxonomy image url if $return_html = true then return <img> tag
 
@@ -30,7 +30,7 @@ $return_img_tag
 (boolean) (Optional) Formatted Image with <img> tag for the field during output.
 
 $class
-(array|string) (Optional) An array or space separated string of CSS classes to add to the <img> tag. classes ex: array( 'class1', 'class2', ... ) but $return_img_tag should be true to add image class.
+(string) (Optional) A space separated string of CSS classes to add to the <img> tag. classes ex: "your custom class list separated by space" but $return_img_tag should be true to add image class.
 
 echo $taxonomy_img; // taxonomy image url
 </pre>
@@ -49,13 +49,11 @@ echo do_shortcode( '[ad_tax_image term_id="" return_img_tag="true" class="your c
 * Built-in Template Tag to use in your theme template
 * Shortcode to use anywhere.
 
-Interested in contributing to Advanced Category and Custom Taxonomy Image?
-Contact me at sagorh672(at)gmail(dot)com
-
 == Screenshots ==
 1. Settings page for enabling taxonomy image upload for different taxonomies
 2. Settings page for enabling taxonomy image upload for different devices
 3. Auto Template Tag Generation
+3. Taxonomy Edit Page
 
 
 == Frequently Asked Questions ==
@@ -73,6 +71,8 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 6. After Enabling Go To Your Taxonomy Add/Edit Page To Upload Image
 
 == Changelog ==
+= 2.0.4 =
+* Minor changes in the code styling
 = 2.0.3 =
 * Compatibility checkup for latest wp version 6.8
 = 2.0.2 =
