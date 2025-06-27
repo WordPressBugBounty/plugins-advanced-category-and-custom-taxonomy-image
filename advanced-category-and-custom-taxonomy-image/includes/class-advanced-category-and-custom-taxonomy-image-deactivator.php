@@ -24,6 +24,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Deactivator {
 	 * or removing options.
 	 *
 	 * @since     2.0.0
+	 * @static
 	 * @access    public
 	 */
 	public static function on_deactivate() {}

@@ -13,7 +13,7 @@
  * Plugin Name:       Advanced Category and Custom Taxonomy Image
  * Plugin URI:        https://wordpress.org/plugins/advanced-category-and-custom-taxonomy-image/
  * Description:       Advanced Category and Taxonomy Image Plugin allow you to add image to your category / tag / custom taxonomy for different platforms (Mobile/ Desktop/ Tablet/ Mac/ Any etc).
- * Version:           2.0.4
+ * Version:           2.0.5
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Author:            Sajjad Hossain Sagor
@@ -110,7 +110,6 @@ run_advanced_category_and_custom_taxonomy_image();
  * @return   string|empty                 The image URL or HTML <img> tag, or an empty string if no image is found or term ID is invalid.
  */
 function get_taxonomy_image( $term_id = '', $return_img_tag = false, $extra_classes = '' ) {
-	$detect  = new \Detection\MobileDetect();
 	$term_id = ! intval( $term_id ) ? get_queried_object()->term_id : intval( $term_id );
 
 	// get all image field enabled taxonomies.
@@ -128,6 +127,8 @@ function get_taxonomy_image( $term_id = '', $return_img_tag = false, $extra_clas
 	if ( ! empty( $enabled_taxonomies ) ) {
 		// check if any device enabled.
 		if ( ! empty( $enabled_devices ) ) {
+			$detect = new \Detection\MobileDetect();
+
 			// registed custom image field for each enabled devices.
 			foreach ( $enabled_devices as $enabled_device ) {
 				if ( 'android' === $enabled_device && $detect->isAndroidOS() ) {

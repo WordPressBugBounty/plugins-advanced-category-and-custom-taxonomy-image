@@ -53,13 +53,13 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Public {
 	 * This function handles the 'ad_tax_image' shortcode, retrieving and displaying a taxonomy image
 	 * based on the provided attributes.
 	 *
-	 * @access   public
-	 * @since    2.0.0
-	 * @param    array $atts Shortcode attributes.
-	 *                       - 'term_id': (string|int, optional) The ID of the taxonomy term to retrieve the image for. Defaults to ''.
-	 *                       - 'return_img_tag': (string|bool, optional) Whether to return the image as an <img> tag. Defaults to false.
-	 *                       - 'class': (string, optional) Custom CSS classes to add to the image tag. Defaults to ''.
-	 * @return   string      The taxonomy image or an empty string if no image is found or term_id is invalid.
+	 * @since     2.0.0
+	 * @access    public
+	 * @param     array $atts Shortcode attributes.
+	 *                        - 'term_id': (string|int, optional) The ID of the taxonomy term to retrieve the image for. Defaults to ''.
+	 *                        - 'return_img_tag': (string|bool, optional) Whether to return the image as an <img> tag. Defaults to false.
+	 *                        - 'class': (string, optional) Custom CSS classes to add to the image tag. Defaults to ''.
+	 * @return   string       The taxonomy image or an empty string if no image is found or term_id is invalid.
 	 */
 	public function ad_tax_image_shortcode_callback( $atts ) {
 		// Merge provided attributes with default values.

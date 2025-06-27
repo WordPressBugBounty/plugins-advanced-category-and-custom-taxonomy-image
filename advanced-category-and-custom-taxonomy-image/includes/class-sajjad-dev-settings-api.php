@@ -2,11 +2,10 @@
 /**
  * File containing the definition of the Sajjad_Dev_Settings_API class.
  *
- * This file defines the Sajjad_Dev_Settings_API class, a wrapper for the WordPress Options API.
+ * This file defines the Sajjad_Dev_Settings_API class, a wrapper for the WordPress Settings API.
  *
- * @package       Advanced_Category_And_Custom_Taxonomy_Image
- * @subpackage    Advanced_Category_And_Custom_Taxonomy_Image/includes
- * @author        Sajjad Hossain Sagor <sagorh672@gmail.com>
+ * @package    Sajjad_Dev_Settings_API
+ * @author     Sajjad Hossain Sagor <sagorh672@gmail.com>
  */
 
 if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
@@ -40,10 +39,11 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 		 * Allowed html tags array.
 		 *
 		 * @since     2.0.0
+		 * @static
 		 * @access    public
 		 * @var       array
 		 */
-		public $allowed_html_tags = array(
+		public static $allowed_html_tags = array(
 			'a'        => array(
 				'id'     => true,
 				'class'  => true,
@@ -426,7 +426,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 				if ( isset( $section['desc'] ) && ! empty( $section['desc'] ) ) {
 					$section['desc'] = '<div class="inside">' . $section['desc'] . '</div>';
 					$callback        = function () use ( $section ) {
-						echo esc_textarea( str_replace( '"', '\"', $section['desc'] ) );
+						echo wp_kses( $section['desc'], self::$allowed_html_tags );
 					};
 				} elseif ( isset( $section['callback'] ) ) {
 					$callback = $section['callback'];
@@ -499,7 +499,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html        = sprintf( '<input data-default-color="test" type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s/>', $type, $size, $args['section'], $args['id'], $value, $placeholder );
 			$html       .= $this->get_field_description( $args );
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -531,7 +531,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html        = sprintf( '<input type="%1$s" class="%2$s-number" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s%7$s%8$s%9$s/>', $type, $size, $args['section'], $args['id'], $value, $placeholder, $min, $max, $step );
 			$html       .= $this->get_field_description( $args );
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -550,7 +550,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html .= sprintf( '%1$s</label>', $args['desc'] );
 			$html .= '</fieldset>';
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -575,7 +575,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html .= $this->get_field_description( $args );
 			$html .= '</fieldset>';
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -598,7 +598,31 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html .= $this->get_field_description( $args );
 			$html .= '</fieldset>';
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
+		}
+
+		/**
+		 * Displays a radio button with images for a settings field
+		 *
+		 * @since     2.0.0
+		 * @access    public
+		 * @param     array $args Settings field args.
+		 */
+		public function callback_radio_image( $args ) {
+			$value = $this->get_option( $args['id'], $args['section'], $args['std'] );
+			$html  = '<div id="sajjaddev-radio-button-wrapper">';
+			foreach ( $args['options'] as $key => $label ) {
+				$html .= '<div class="sajjaddev-radio-item">';
+				$html .= sprintf( '<label for="wpuf-%1$s[%2$s][%3$s]">', $args['section'], $args['id'], $key );
+				$html .= sprintf( '<input type="radio" class="radio" id="wpuf-%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s" %4$s />', $args['section'], $args['id'], $key, checked( $value, $key, false ) );
+				$html .= sprintf( '<img src="%1$s"></label>', $label );
+				$html .= '</div>';
+			}
+
+			$html .= $this->get_field_description( $args );
+			$html .= '</div>';
+
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -620,7 +644,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html .= sprintf( '</select>' );
 			$html .= $this->get_field_description( $args );
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -642,7 +666,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html .= sprintf( '</select>' );
 			$html .= $this->get_field_description( $args );
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -659,7 +683,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html        = sprintf( '<textarea style="min-width: 150px; max-width: 100%%; min-height: 150px; height: 100%%; width: 100%%;" %1$s id="%3$s" name="%2$s[%3$s]"%4$s>%5$s</textarea>', $readonly, $args['section'], $args['id'], $placeholder, $value );
 			$html       .= $this->get_field_description( $args );
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -670,7 +694,8 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 		 * @param     array $args Settings field args.
 		 */
 		public function callback_html( $args ) {
-			echo wp_kses( $this->get_field_description( $args ), $this->allowed_html_tags );
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $this->get_field_description( $args );
 		}
 
 		/**
@@ -700,7 +725,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 
 			echo '</div>';
 
-			echo wp_kses( $this->get_field_description( $args ), $this->allowed_html_tags );
+			echo wp_kses( $this->get_field_description( $args ), self::$allowed_html_tags );
 		}
 
 		/**
@@ -719,7 +744,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html .= '<input type="button" class="button sajjaddev-browse" style="margin-left: 5px;" value="' . $label . '" />';
 			$html .= $this->get_field_description( $args );
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -735,7 +760,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html  = sprintf( '<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['section'], $args['id'], $value );
 			$html .= $this->get_field_description( $args );
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -751,7 +776,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			$html  = sprintf( '<input type="text" class="%1$s-text wp-color-picker-field" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" data-default-color="%5$s" />', $size, $args['section'], $args['id'], $value, $args['std'] );
 			$html .= $this->get_field_description( $args );
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -769,7 +794,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 				'echo'     => 0,
 			);
 
-			echo wp_kses( wp_dropdown_pages( $dropdown_args ), $this->allowed_html_tags );
+			echo wp_kses( wp_dropdown_pages( $dropdown_args ), self::$allowed_html_tags );
 		}
 
 		/**
@@ -788,7 +813,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 				'hide_empty' => 0,
 			);
 
-			echo wp_kses( wp_dropdown_categories( $dropdown_args ), $this->allowed_html_tags );
+			echo wp_kses( wp_dropdown_categories( $dropdown_args ), self::$allowed_html_tags );
 		}
 
 		/**
@@ -809,7 +834,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 				'role__not_in' => isset( $args['role__not_in'] ) ? $args['role__not_in'] : array(),
 			);
 
-			echo wp_kses( wp_dropdown_users( $dropdown_args ), $this->allowed_html_tags );
+			echo wp_kses( wp_dropdown_users( $dropdown_args ), self::$allowed_html_tags );
 		}
 
 		/**
@@ -868,23 +893,30 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 		}
 
 		/**
-		 * Get the value of a settings field
+		 * Retrieves the value of a specific settings field.
+		 *
+		 * This method fetches the value of a settings field from the WordPress options database.
+		 * It retrieves the entire option group for the given section and then extracts the
+		 * value for the specified field.
 		 *
 		 * @since     2.0.0
 		 * @access    public
-		 * @param     string $option      Settings field name.
-		 * @param     string $section     The section name this field belongs to.
-		 * @param     string $default_val Default text if it's not found.
-		 * @return    string
+		 * @param     string $option        The name of the settings field.
+		 * @param     string $section       The name of the section this field belongs to. This corresponds
+		 *                                  to the option name used in `register_setting()`.
+		 * @param     string $default_value Optional. The default value to return if the field's value
+		 *                                  is not found in the database. Default is an empty string.
+		 * @return    string|mixed          The value of the settings field, or the default value if not found.
 		 */
-		public function get_option( $option, $section, $default_val = '' ) {
-			$options = get_option( $section );
+		public function get_option( $option, $section, $default_value = '' ) {
+			$options = get_option( $section ); // Get all options for the section.
 
+			// Check if the option exists within the section's options array.
 			if ( isset( $options[ $option ] ) ) {
-				return $options[ $option ];
+				return $options[ $option ]; // Return the option value.
 			}
 
-			return $default_val;
+			return $default_value; // Return the default value if the option is not found.
 		}
 
 		/**
@@ -896,7 +928,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 		 * @access    public
 		 */
 		public function show_navigation() {
-			$html  = '<h2 class="nav-tab-wrapper">';
+			$html  = '<h1 class="nav-tab-wrapper">';
 			$count = count( $this->settings_sections );
 
 			// don't show the navigation if only one section exists.
@@ -908,9 +940,9 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 				$html .= sprintf( '<a href="#%1$s" class="nav-tab" id="%1$s-tab">%2$s</a>', $tab['id'], $tab['title'] );
 			}
 
-			$html .= '</h2>';
+			$html .= '</h1>';
 
-			echo wp_kses( $html, $this->allowed_html_tags );
+			echo wp_kses( $html, self::$allowed_html_tags );
 		}
 
 		/**
@@ -957,7 +989,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 			<script type="text/javascript">
 			jQuery( document ).ready( function( $ )
 			{
-				// Switches option sections
+				// Switches option sections.
 				$( '.group' ).hide();
 				
 				$( '.wp-color-picker-field' ).wpColorPicker();
@@ -969,7 +1001,7 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 					activetab = localStorage.getItem( 'activetab' );
 				}
 
-				//if url has section id as hash then set it as active or override the current local storage value
+				// if url has section id as hash then set it as active or override the current local storage value.
 				if( window.location.hash )
 				{
 					activetab = window.location.hash;
@@ -1056,11 +1088,58 @@ if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 						self.prev( '.sajjaddev-url' ).val( attachment.url ).change();
 					} );
 
-					// Finally, open the modal
+					// Finally, open the modal.
 					file_frame.open();
 				} );
 			} );
 			</script>
+			<!-- Stylesheet for radio image -->
+			<style type="text/css">
+				/* HIDE RADIO */
+				#sajjaddev-radio-button-wrapper [type=radio] { 
+					position: absolute;
+					opacity: 0;
+					width: 0;
+					height: 0;
+				}
+
+				/* IMAGE STYLES */
+				#sajjaddev-radio-button-wrapper [type=radio] + img {
+					cursor: pointer;
+					margin: 10px;
+					width: auto;
+					max-width: 100%;
+					border-radius: 5px;
+				}
+
+				/* CHECKED STYLES */
+				#sajjaddev-radio-button-wrapper [type=radio]:checked + img {
+					outline: 2px solid #12a900;
+				}
+
+				#sajjaddev-radio-button-wrapper {
+					display: inline-flex;
+					flex-wrap: wrap;
+					align-content: center;
+					flex-direction: row;
+					justify-content: flex-start;
+					align-items: center;
+				}
+
+				.sajjaddev-radio-item {
+					background: white;
+					border: 1px solid #ebebeb;
+					padding: 5px;
+					min-height: 100px;
+					display: flex;
+					align-items: center;
+					width: 12rem;
+					align-content: center;
+					flex-wrap: nowrap;
+					flex-direction: row;
+					justify-content: center;
+				}
+			</style>
 			<?php
 		}
 	}

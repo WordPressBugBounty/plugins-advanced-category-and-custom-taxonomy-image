@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the definition of the WP_Edit_Username_Admin class, which
+ * This file contains the definition of the Advanced_Category_And_Custom_Taxonomy_Image_Admin class, which
  * is used to load the plugin's admin-specific functionality.
  *
  * @package       Advanced_Category_And_Custom_Taxonomy_Image
@@ -46,9 +46,10 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 	/**
 	 * The list of availalbe devices to detect.
 	 *
-	 * @since    2.0.0
-	 * @access   public
-	 * @var      array $devices Holds device types list.
+	 * @since     2.0.0
+	 * @static
+	 * @access    public
+	 * @var       array $devices Holds device types list.
 	 */
 	private static $devices = array();
 
@@ -197,9 +198,9 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 		 * This filter allows you to modify the plugin settings sections.
 		 * You can use this filter to add/remove/edit any settings sections.
 		 *
-		 * @since    2.0.3
-		 * @param    array $settings_sections Default settings sections.
-		 * @return   array $settings_sections Modified settings sections.
+		 * @since     2.0.3
+		 * @param     array $settings_sections Default settings sections.
+		 * @return    array $settings_sections Modified settings sections.
 		 */
 		return apply_filters( 'ad_cat_tax_img_settings_sections', $settings_sections );
 	}
@@ -222,8 +223,8 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 		 * This filter is applied to the array of devices used for targeting images,
 		 * allowing for modification of the device list.
 		 *
-		 * @since     2.0.0
-		 * @param     array $devices An array of devices.
+		 * @since    2.0.0
+		 * @param    array $devices An array of devices.
 		 */
 		self::$devices = apply_filters( 'ad_tax_image_devices', array() );
 
@@ -254,9 +255,9 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 		 * This filter allows you to modify the plugin settings fields.
 		 * You can use this filter to add/remove/edit any settings field.
 		 *
-		 * @since    2.0.3
-		 * @param    array $settings_fields Default settings fields.
-		 * @return   array $settings_fields Modified settings fields.
+		 * @since     2.0.3
+		 * @param     array $settings_fields Default settings fields.
+		 * @return    array $settings_fields Modified settings fields.
 		 */
 		return apply_filters( 'ad_cat_tax_img_settings_fields', $settings_fields );
 	}
@@ -385,12 +386,11 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 		 * This filter is applied to the array of devices used for targeting images,
 		 * allowing for modification of the device list.
 		 *
-		 * @since     2.0.0
-		 * @param     array $devices An array of devices.
+		 * @since    2.0.0
+		 * @param    array $devices An array of devices.
 		 */
 		self::$devices = apply_filters( 'ad_tax_image_devices', array() );
-
-		$label = __( 'Choose File', 'advanced-category-and-custom-taxonomy-image' );
+		$label         = __( 'Choose File', 'advanced-category-and-custom-taxonomy-image' );
 
 		// get all image field enabled devices.
 		$enabled_devices = Advanced_Category_And_Custom_Taxonomy_Image::get_option( 'enabled_devices', 'ad_cat_tax_img_advanced_settings' );
@@ -412,7 +412,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 				$html .= '</div>';
 			}
 
-			echo wp_kses( $html, $this->settings_api->allowed_html_tags );
+			echo wp_kses( $html, $this->settings_api::$allowed_html_tags );
 		} else {
 			$html  = '<div class="form-field"><label for="tax_image_url_any">' . __( 'Taxonomy Image For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</label>';
 			$html .= '<input type="text" class="tax_image_upload advanced-category-and-custom-taxonomy-image-url" id="tax_image_url_any" name="tax_image_url[tax_image_url_any]" value=""/>';
@@ -420,7 +420,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 			$html .= '<p class="description">' . __( 'Choose Image To Show For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</p>';
 			$html .= '</div>';
 
-			echo wp_kses( $html, $this->settings_api->allowed_html_tags );
+			echo wp_kses( $html, $this->settings_api::$allowed_html_tags );
 		}
 
 		wp_nonce_field( 'ad_tax_image_nonce', 'ad_tax_image_nonce', false );
@@ -444,12 +444,11 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 		 * This filter is applied to the array of devices used for targeting images,
 		 * allowing for modification of the device list.
 		 *
-		 * @since     2.0.0
-		 * @param     array $devices An array of devices.
+		 * @since    2.0.0
+		 * @param    array $devices An array of devices.
 		 */
 		self::$devices = apply_filters( 'ad_tax_image_devices', array() );
-
-		$label = __( 'Choose File', 'advanced-category-and-custom-taxonomy-image' );
+		$label         = __( 'Choose File', 'advanced-category-and-custom-taxonomy-image' );
 
 		// get all image field enabled devices.
 		$enabled_devices = Advanced_Category_And_Custom_Taxonomy_Image::get_option( 'enabled_devices', 'ad_cat_tax_img_advanced_settings' );
@@ -478,7 +477,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 				$html .= '<p class="description">' . __( 'Choose Image To Show For ', 'advanced-category-and-custom-taxonomy-image' ) . esc_attr( self::$devices[ $enabled_device ] ) . '</p>';
 			}
 
-			echo wp_kses( $html, $this->settings_api->allowed_html_tags );
+			echo wp_kses( $html, $this->settings_api::$allowed_html_tags );
 		} else {
 			// previous version db name was universal, so for compatibility we are checking if universal exists anymore.
 			$any_image_url = Advanced_Category_And_Custom_Taxonomy_Image::get_any_device_image( $taxonomy->term_id );
@@ -490,7 +489,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 			$html .= '<input type="button" class="button advanced-category-and-custom-taxonomy-image-upload-btn" value="' . esc_attr( $label ) . '" />';
 			$html .= '<p class="description">' . __( 'Choose Image To Show For Any Device', 'advanced-category-and-custom-taxonomy-image' ) . '</p></td></tr>';
 
-			echo wp_kses( $html, $this->settings_api->allowed_html_tags );
+			echo wp_kses( $html, $this->settings_api::$allowed_html_tags );
 		}
 
 		wp_nonce_field( 'ad_tax_image_nonce', 'ad_tax_image_nonce', false );

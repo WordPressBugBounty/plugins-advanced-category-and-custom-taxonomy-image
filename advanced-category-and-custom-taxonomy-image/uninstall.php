@@ -11,3 +11,7 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	die;
 }
+
+// Remove plugin options.
+delete_option( 'ad_cat_tax_img_basic_settings' );
+delete_option( 'ad_cat_tax_img_advanced_settings' );

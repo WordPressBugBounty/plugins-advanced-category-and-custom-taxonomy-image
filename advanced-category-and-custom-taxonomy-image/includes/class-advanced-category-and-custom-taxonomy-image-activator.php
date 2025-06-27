@@ -24,6 +24,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Activator {
 	 * or scheduling cron jobs.
 	 *
 	 * @since     2.0.0
+	 * @static
 	 * @access    public
 	 */
 	public static function on_activate() {}
