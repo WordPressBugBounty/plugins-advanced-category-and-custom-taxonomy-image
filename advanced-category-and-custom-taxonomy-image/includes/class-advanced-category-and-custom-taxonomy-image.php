@@ -11,8 +11,7 @@
 /**
  * The core plugin class.
  *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing hooks.
+ * This is used to define admin-specific hooks and public-facing hooks.
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
@@ -52,7 +51,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image {
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * Load the dependencies, set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
 	 * @since     2.0.0
@@ -63,7 +62,6 @@ class Advanced_Category_And_Custom_Taxonomy_Image {
 		$this->plugin_name = 'advanced-category-and-custom-taxonomy-image';
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
@@ -74,7 +72,6 @@ class Advanced_Category_And_Custom_Taxonomy_Image {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Advanced_Category_And_Custom_Taxonomy_Image_Loader. Orchestrates the hooks of the plugin.
-	 * - Advanced_Category_And_Custom_Taxonomy_Image_i18n.   Defines internationalization functionality.
 	 * - Sajjad_Dev_Settings_API.                            Provides an interface for interacting with the WordPress Settings API.
 	 * - MobileDetect.                                       The Mobile Detect PHP library.
 	 * - Advanced_Category_And_Custom_Taxonomy_Image_Admin.  Defines all hooks for the admin area.
@@ -92,12 +89,6 @@ class Advanced_Category_And_Custom_Taxonomy_Image {
 		 * core plugin.
 		 */
 		require_once ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH . 'includes/class-advanced-category-and-custom-taxonomy-image-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH . 'includes/class-advanced-category-and-custom-taxonomy-image-i18n.php';
 
 		/**
 		 * The class responsible for defining an interface for interacting with the WordPress Settings API.
@@ -121,21 +112,6 @@ class Advanced_Category_And_Custom_Taxonomy_Image {
 		require_once ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH . 'public/class-advanced-category-and-custom-taxonomy-image-public.php';
 
 		$this->loader = new Advanced_Category_And_Custom_Taxonomy_Image_Loader();
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Advanced_Category_And_Custom_Taxonomy_Image_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since     2.0.0
-	 * @access    private
-	 */
-	private function set_locale() {
-		$plugin_i18n = new Advanced_Category_And_Custom_Taxonomy_Image_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
 
 	/**
@@ -201,8 +177,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image {
 	}
 
 	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
+	 * The name of the plugin used to uniquely identify it within the context of WordPress.
 	 *
 	 * @since     2.0.0
 	 * @access    public

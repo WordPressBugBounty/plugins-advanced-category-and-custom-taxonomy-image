@@ -98,6 +98,8 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 			return;
 		}
 
+		wp_enqueue_media();
+
 		wp_enqueue_script( $this->plugin_name, ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_URL . 'admin/js/admin.js', array( 'jquery' ), $this->version, false );
 
 		wp_localize_script(
@@ -134,11 +136,11 @@ class Advanced_Category_And_Custom_Taxonomy_Image_Admin {
 	public function admin_menu() {
 		add_menu_page(
 			__( 'Advanced Category and Custom Taxonomy Image', 'advanced-category-and-custom-taxonomy-image' ),
-			__( 'Advanced Category and Custom Taxonomy Image', 'advanced-category-and-custom-taxonomy-image' ),
+			__( 'Adv Tax Image', 'advanced-category-and-custom-taxonomy-image' ),
 			'manage_options',
 			'advanced-category-and-custom-taxonomy-image',
 			array( $this, 'menu_page' ),
-			'dashicons-admin-tools'
+			'dashicons-format-image'
 		);
 	}
 
