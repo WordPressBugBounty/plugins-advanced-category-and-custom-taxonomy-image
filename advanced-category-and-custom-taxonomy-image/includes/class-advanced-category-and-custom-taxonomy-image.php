@@ -8,6 +8,11 @@
  * @author        Sajjad Hossain Sagor <sagorh672@gmail.com>
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 /**
  * The core plugin class.
  *
@@ -135,7 +140,7 @@ class Advanced_Category_And_Custom_Taxonomy_Image {
 		$this->loader->add_action( 'edit_term', $plugin_admin, 'save_img_url' );
 		$this->loader->add_action( 'create_term', $plugin_admin, 'save_img_url' );
 
-		$this->loader->add_filter( 'ad_tax_image_devices', $plugin_admin, 'devices', 10, 1 );
+		$this->loader->add_filter( 'advanced_category_and_custom_taxonomy_image_devices', $plugin_admin, 'devices', 10, 1 );
 
 		// get all image field enabled taxonomies.
 		$enabled_taxonomies = self::get_option( 'enabled_taxonomies', 'ad_cat_tax_img_basic_settings' );

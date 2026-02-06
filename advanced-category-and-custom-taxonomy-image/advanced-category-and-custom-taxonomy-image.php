@@ -13,7 +13,7 @@
  * Plugin Name:       Advanced Category and Custom Taxonomy Image
  * Plugin URI:        https://wordpress.org/plugins/advanced-category-and-custom-taxonomy-image/
  * Description:       Advanced Category and Taxonomy Image Plugin allow you to add image to your category / tag / custom taxonomy for different platforms (Mobile/ Desktop/ Tablet/ Mac/ Any etc).
- * Version:           2.0.6
+ * Version:           2.0.9
  * Requires at least: 5.6
  * Requires PHP:      8.0
  * Author:            Sajjad Hossain Sagor
@@ -32,10 +32,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_VERSION', '2.0.6' );
+define( 'ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_VERSION', '2.0.9' );
 
 /**
- * Define Plugin Folders Path
+ * Define Plugin Folders Path.
  */
 define( 'ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
@@ -49,13 +49,13 @@ define( 'ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_BASENAME', plugin_ba
  *
  * @since    2.0.0
  */
-function on_activate_advanced_category_and_custom_taxonomy_image() {
+function advanced_category_and_custom_taxonomy_image_on_activate() {
 	require_once ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH . 'includes/class-advanced-category-and-custom-taxonomy-image-activator.php';
 
 	Advanced_Category_And_Custom_Taxonomy_Image_Activator::on_activate();
 }
 
-register_activation_hook( __FILE__, 'on_activate_advanced_category_and_custom_taxonomy_image' );
+register_activation_hook( __FILE__, 'advanced_category_and_custom_taxonomy_image_on_activate' );
 
 /**
  * The code that runs during plugin deactivation.
@@ -63,13 +63,13 @@ register_activation_hook( __FILE__, 'on_activate_advanced_category_and_custom_ta
  *
  * @since    2.0.0
  */
-function on_deactivate_advanced_category_and_custom_taxonomy_image() {
+function advanced_category_and_custom_taxonomy_image_on_deactivate() {
 	require_once ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH . 'includes/class-advanced-category-and-custom-taxonomy-image-deactivator.php';
 
 	Advanced_Category_And_Custom_Taxonomy_Image_Deactivator::on_deactivate();
 }
 
-register_deactivation_hook( __FILE__, 'on_deactivate_advanced_category_and_custom_taxonomy_image' );
+register_deactivation_hook( __FILE__, 'advanced_category_and_custom_taxonomy_image_on_deactivate' );
 
 /**
  * The core plugin class that is used to define admin-specific and public-facing hooks.
@@ -87,13 +87,13 @@ require ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_PATH . 'includes/clas
  *
  * @since    2.0.0
  */
-function run_advanced_category_and_custom_taxonomy_image() {
+function advanced_category_and_custom_taxonomy_image_run() {
 	$plugin = new Advanced_Category_And_Custom_Taxonomy_Image();
 
 	$plugin->run();
 }
 
-run_advanced_category_and_custom_taxonomy_image();
+advanced_category_and_custom_taxonomy_image_run();
 
 /**
  * Retrieves the URL or HTML image tag for a taxonomy image.
@@ -109,50 +109,66 @@ run_advanced_category_and_custom_taxonomy_image();
  * @return   string|empty                 The image URL or HTML <img> tag, or an empty string if no image is found or term ID is invalid.
  */
 function get_taxonomy_image( $term_id = '', $return_img_tag = false, $extra_classes = '' ) {
-	$term_id = ! intval( $term_id ) ? get_queried_object()->term_id : intval( $term_id );
-
 	// get all image field enabled taxonomies.
 	$enabled_taxonomies = Advanced_Category_And_Custom_Taxonomy_Image::get_option( 'enabled_taxonomies', 'ad_cat_tax_img_basic_settings' );
+
+	// Message type when an image is not found.
+	$message_type = Advanced_Category_And_Custom_Taxonomy_Image::get_option( 'message_type', 'ad_cat_tax_img_advanced_settings', 'message' );
+
+	// check if any taxonomy enabled.
+	if ( empty( $enabled_taxonomies ) ) {
+		switch ( $message_type ) {
+			case 'message':
+				return __( 'Please Enable Taxonomies First!', 'advanced-category-and-custom-taxonomy-image' );
+			case 'placeholder':
+				$classes             = is_array( $extra_classes ) ? implode( ' ', $extra_classes ) : esc_attr( $extra_classes );
+				$placeholder_img_url = ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_URL . 'public/img/placeholder.svg';
+
+				return filter_var( $return_img_tag, FILTER_VALIDATE_BOOLEAN ) ? "<img src='" . esc_url( $placeholder_img_url ) . "' class='" . esc_attr( $classes ) . "'>" : esc_url( $placeholder_img_url );
+			case 'nothing':
+				return '';
+			default:
+				return '';
+		}
+	}
+
+	$term_id = ! intval( $term_id ) ? get_queried_object()->term_id : intval( $term_id );
 
 	// get all image field enabled devices.
 	$enabled_devices = Advanced_Category_And_Custom_Taxonomy_Image::get_option( 'enabled_devices', 'ad_cat_tax_img_advanced_settings' );
 
-	$device_image_url = ''; // Set default image url to empty.
+	// Set default image url to empty.
+	$device_image_url = '';
 
 	// previous version db name was universal, so for compatibility we are checking if universal exists anymore.
 	$any_device_image_url = Advanced_Category_And_Custom_Taxonomy_Image::get_any_device_image( $term_id );
 
-	// check if any taxonomy enabled.
-	if ( ! empty( $enabled_taxonomies ) ) {
-		// check if any device enabled.
-		if ( ! empty( $enabled_devices ) ) {
-			$detect = new \Detection\MobileDetect();
+	// check if any device enabled.
+	if ( ! empty( $enabled_devices ) ) {
+		$detect = new \Detection\MobileDetect();
 
-			// registed custom image field for each enabled devices.
-			foreach ( $enabled_devices as $enabled_device ) {
-				if ( 'android' === $enabled_device && $detect->isAndroidOS() ) {
-					$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
-					break; // android match found no need to check further.
-				} elseif ( 'iphone' === $enabled_device && $detect->isiOS() ) {
-					$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
-					break; // iOS match found no need to check further.
-				} elseif ( 'windowsph' === $enabled_device && $detect->version( 'Windows Phone' ) ) {
-					$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
-					break; // Windows Phone match found no need to check further.
-				} elseif ( 'mobile' === $enabled_device && $detect->isMobile() ) {
-					$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
-					break; // Any Mobile match found no need to check further.
-				} elseif ( 'tablet' === $enabled_device && $detect->isTablet() ) {
-					$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
-					break; // Any Mobile match found no need to check further.
-				} elseif ( 'desktop' === $enabled_device ) {
-					$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
-					break; // Dektop match found no need to check further.
-				}
+		// registed custom image field for each enabled devices.
+		foreach ( $enabled_devices as $enabled_device ) {
+			if ( 'android' === $enabled_device && $detect->isAndroidOS() ) {
+				$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+				break; // android match found no need to check further.
+			} elseif ( 'iphone' === $enabled_device && $detect->isiOS() ) {
+				$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+				break; // iOS match found no need to check further.
+			} elseif ( 'windowsph' === $enabled_device && $detect->version( 'Windows Phone' ) ) {
+				$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+				break; // Windows Phone match found no need to check further.
+			} elseif ( 'mobile' === $enabled_device && $detect->isMobile() ) {
+				$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+				break; // Any Mobile match found no need to check further.
+			} elseif ( 'tablet' === $enabled_device && $detect->isTablet() ) {
+				$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+				break; // Any Mobile match found no need to check further.
+			} elseif ( 'desktop' === $enabled_device ) {
+				$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+				break; // Dektop match found no need to check further.
 			}
 		}
-	} else {
-		$device_image_url = __( 'Please Enable Taxonomies First!', 'advanced-category-and-custom-taxonomy-image' );
 	}
 
 	if ( empty( $device_image_url ) && ! empty( $any_device_image_url ) ) {
@@ -163,5 +179,21 @@ function get_taxonomy_image( $term_id = '', $return_img_tag = false, $extra_clas
 	$classes = is_array( $extra_classes ) ? implode( ' ', $extra_classes ) : esc_attr( $extra_classes );
 	$result  = filter_var( $return_img_tag, FILTER_VALIDATE_BOOLEAN ) ? "<img src='" . esc_url( $device_image_url ) . "' class='" . esc_attr( $classes ) . "'>" : esc_url( $device_image_url );
 
-	return ! empty( $device_image_url ) ? $result : __( 'Please Upload Image First!', 'advanced-category-and-custom-taxonomy-image' );
+	if ( ! empty( $device_image_url ) ) {
+		return $result;
+	} else {
+		switch ( $message_type ) {
+			case 'message':
+				return __( 'Please Upload Image First!', 'advanced-category-and-custom-taxonomy-image' );
+			case 'placeholder':
+				$classes             = is_array( $extra_classes ) ? implode( ' ', $extra_classes ) : esc_attr( $extra_classes );
+				$placeholder_img_url = ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_URL . 'public/img/placeholder.svg';
+
+				return filter_var( $return_img_tag, FILTER_VALIDATE_BOOLEAN ) ? "<img src='" . esc_url( $placeholder_img_url ) . "' class='" . esc_attr( $classes ) . "'>" : esc_url( $placeholder_img_url );
+			case 'nothing':
+				return '';
+			default:
+				return '';
+		}
+	}
 }

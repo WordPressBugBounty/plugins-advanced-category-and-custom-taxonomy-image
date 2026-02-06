@@ -2,3 +2,7 @@ input.tax_image_upload[type=text] {
 	width: 75%;
 	margin-right: 5px;
 }
+
+img.image_url_img_preview {
+	margin-bottom: 5px;
+}

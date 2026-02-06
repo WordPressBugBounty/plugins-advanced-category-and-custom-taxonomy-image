@@ -8,6 +8,11 @@
  * @author     Sajjad Hossain Sagor <sagorh672@gmail.com>
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 if ( ! class_exists( 'Sajjad_Dev_Settings_API' ) ) :
 	/**
 	 * Wrapper class for the WordPress Options API.

@@ -2,9 +2,9 @@
 Tags: taxonomy image, category image, featured image, category logo, term image
 Contributors: sajjad67
 Author: Sajjad Hossain Sagor
-Tested up to: 6.8
+Tested up to: 6.9
 Requires at least: 5.6
-Stable tag: 2.0.6
+Stable tag: 2.0.9
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -55,7 +55,6 @@ echo do_shortcode( '[ad_tax_image term_id="" return_img_tag="true" class="your c
 3. Auto Template Tag Generation
 3. Taxonomy Edit Page
 
-
 == Frequently Asked Questions ==
 1. How can i use the image i uploaded?
 Get Your Taxonomy tag_ID and use get_taxonomy_image( $term_id ) to get the image url and use it in your theme's template area where you want to show it. (Note : In the taxonomy list there you will find already created template tag to use see screenshot 3)
@@ -66,11 +65,18 @@ Get Your Taxonomy tag_ID and use get_taxonomy_image( $term_id ) to get the image
 3. Drag / Click upload the plugin zip file
 4. The resulting installation screen will list the installation as successful or note any problems during the install.
 If successful, click Activate Plugin to activate it, or Return to Plugin Installer for further actions.
-3. Go to your Dashboard ->Settings -> Advanced Category & Taxonomy Image.
+3. Go to your Dashboard -> Settings -> Advanced Category & Taxonomy Image.
 4. There You Will Find Fields To Enable Taxonomy & Device Filters.
 6. After Enabling Go To Your Taxonomy Add/Edit Page To Upload Image
 
 == Changelog ==
+= 2.0.9 =
+* Added option to select message type when no image is found
+= 2.0.8 =
+* Compatibility checkup for latest wp version 6.9
+= 2.0.7 =
+* Fixed issue: Tax image was not updating for any device type.
+* Enhancements: Now you can see selected image real time.
 = 2.0.6 =
 * Fixed issue: typo giving fatal error
 = 2.0.5 =
@@ -107,5 +113,8 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 * Minor Update.. tested for latest wp compatibility..
 = 1.0.1 =
 * Minor Update.. tested for latest wp compatibility..
-= 1.0 =
+= 1.0.0 =
 * Initial release.
+
+== Upgrade Notice ==
+Always try to keep your plugin update so that you can get the improved and additional features added to this plugin up to date.
