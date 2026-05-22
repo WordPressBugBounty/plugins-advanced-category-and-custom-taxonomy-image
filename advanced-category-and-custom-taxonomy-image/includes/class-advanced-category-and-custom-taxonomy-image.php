@@ -268,39 +268,45 @@ class Advanced_Category_And_Custom_Taxonomy_Image {
 				// registed custom image field for each enabled devices.
 				foreach ( $enabled_devices as $enabled_device ) {
 					if ( 'android' === $enabled_device ) {
-						$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+						$_device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						if ( ! empty( $device_image_url ) ) {
+						if ( ! empty( $_device_image_url ) ) {
+							$device_image_url = $_device_image_url;
 							break; // android match found no need to check further.
 						}
 					} elseif ( 'iphone' === $enabled_device ) {
-						$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+						$_device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						if ( ! empty( $device_image_url ) ) {
+						if ( ! empty( $_device_image_url ) ) {
+							$device_image_url = $_device_image_url;
 							break; // iOS match found no need to check further.
 						}
 					} elseif ( 'windowsph' === $enabled_device ) {
-						$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+						$_device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						if ( ! empty( $device_image_url ) ) {
+						if ( ! empty( $_device_image_url ) ) {
+							$device_image_url = $_device_image_url;
 							break; // Windows Phone match found no need to check further.
 						}
 					} elseif ( 'mobile' === $enabled_device ) {
-						$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+						$_device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						if ( ! empty( $device_image_url ) ) {
+						if ( ! empty( $_device_image_url ) ) {
+							$device_image_url = $_device_image_url;
 							break; // Mobile match found no need to check further.
 						}
 					} elseif ( 'tablet' === $enabled_device ) {
-						$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+						$_device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						if ( ! empty( $device_image_url ) ) {
+						if ( ! empty( $_device_image_url ) ) {
+							$device_image_url = $_device_image_url;
 							break; // Tablet match found no need to check further.
 						}
 					} elseif ( 'desktop' === $enabled_device ) {
-						$device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
+						$_device_image_url = get_term_meta( $term_id, 'tax_image_url_' . $enabled_device, true );
 
-						if ( ! empty( $device_image_url ) ) {
+						if ( ! empty( $_device_image_url ) ) {
+							$device_image_url = $_device_image_url;
 							break; // Desktop match found no need to check further.
 						}
 					}

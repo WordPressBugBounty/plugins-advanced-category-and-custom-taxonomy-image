@@ -13,7 +13,7 @@
  * Plugin Name:       Advanced Category and Custom Taxonomy Image
  * Plugin URI:        https://wordpress.org/plugins/advanced-category-and-custom-taxonomy-image/
  * Description:       Advanced Category and Taxonomy Image Plugin allow you to add image to your category / tag / custom taxonomy for different platforms (Mobile/ Desktop/ Tablet/ Mac/ Any etc).
- * Version:           2.0.9
+ * Version:           2.1.0
  * Requires at least: 5.6
  * Requires PHP:      8.0
  * Author:            Sajjad Hossain Sagor
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_VERSION', '2.0.9' );
+define( 'ADVANCED_CATEGORY_AND_CUSTOM_TAXONOMY_IMAGE_PLUGIN_VERSION', '2.1.0' );
 
 /**
  * Define Plugin Folders Path.
