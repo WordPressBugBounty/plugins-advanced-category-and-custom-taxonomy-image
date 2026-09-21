@@ -3,7 +3,7 @@
 [![Plugin Banner](https://ps.w.org/advanced-category-and-custom-taxonomy-image/assets/banner-1544x500.png)](https://wordpress.org/plugins/advanced-category-and-custom-taxonomy-image/)
 
 **Tags:** taxonomy image, category image, featured image, category logo, term image \
-**Tested up to:** 7.0 \
+**Tested up to:** 7.1 \
 **Requires PHP:** 8.0
 
 Add Custom Image To Your Category / Custom Taxonomy Field With Advanced Category and Custom Taxonomy Image Plugin.
@@ -83,6 +83,9 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 6. After Enabling Go To Your Taxonomy Add/Edit Page To Upload Image
 
 ## Changelog
+
+### 2.1.1
+* Compatibility checkup for latest wp version 7.1
 
 ### 2.1.0
 * Compatibility checkup for latest wp version 7.0
